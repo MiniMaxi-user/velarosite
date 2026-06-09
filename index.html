@@ -1,0 +1,1521 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Velaro — Het Platform voor de Paardensport</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400&family=Inter:wght@300;400;500;600&display=swap');
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --bg:        #0B0B0D;
+    --surf-1:    #111214;
+    --surf-2:    #16181C;
+    --gold:      #D8BD71;
+    --gold-2:    #BEA256;
+    --amber:     #F2AD75;
+    --white:     #FFFFFF;
+    --muted:     #A3A3A3;
+    --border:    rgba(255,255,255,0.08);
+    --glow:      rgba(216,189,113,0.15);
+    --glow-amber:rgba(242,173,117,0.2);
+    --r:         20px;
+  }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    background: var(--bg);
+    color: var(--white);
+    font-family: 'Inter', sans-serif;
+    font-size: 16px;
+    line-height: 1.6;
+    overflow-x: hidden;
+  }
+
+  /* ── SCROLLBAR ── */
+  ::-webkit-scrollbar { width: 4px; }
+  ::-webkit-scrollbar-track { background: var(--bg); }
+  ::-webkit-scrollbar-thumb { background: var(--gold-2); border-radius: 2px; }
+
+  /* ── NAV ── */
+  nav {
+    position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 20px 60px;
+    background: rgba(11,11,13,0.85);
+    backdrop-filter: blur(20px);
+    border-bottom: 1px solid var(--border);
+  }
+
+  .nav-logo img {
+    height: 36px;
+    width: auto;
+    display: block;
+  }
+
+  .nav-links {
+    display: flex; gap: 36px;
+    list-style: none;
+  }
+  .nav-links a {
+    color: var(--muted);
+    text-decoration: none;
+    font-size: 13px;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    transition: color .3s;
+  }
+  .nav-links a:hover { color: var(--gold); }
+
+  .nav-cta {
+    background: linear-gradient(135deg, var(--gold), var(--gold-2));
+    color: #0B0B0D;
+    border: none;
+    padding: 10px 28px;
+    border-radius: 4px;
+    font-size: 12px;
+    font-weight: 600;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    cursor: pointer;
+    transition: opacity .3s, box-shadow .3s;
+  }
+  .nav-cta:hover { opacity: .9; box-shadow: 0 0 20px var(--glow); }
+
+  /* ── SECTION WRAPPER ── */
+  section { padding: 120px 60px; }
+
+  .label {
+    font-size: 11px;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    color: var(--gold);
+    margin-bottom: 20px;
+    display: flex; align-items: center; gap: 12px;
+  }
+  .label::before {
+    content: '';
+    display: block; width: 32px; height: 1px;
+    background: var(--gold);
+  }
+
+  /* ── HERO ── */
+  #hero {
+    min-height: 100vh;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    align-items: center;
+    gap: 80px;
+    padding-top: 160px;
+    position: relative;
+    overflow: hidden;
+  }
+
+  #hero::before {
+    content: '';
+    position: absolute;
+    top: -200px; right: -200px;
+    width: 700px; height: 700px;
+    background: radial-gradient(circle, rgba(216,189,113,0.06) 0%, transparent 70%);
+    pointer-events: none;
+  }
+
+  .hero-left { position: relative; z-index: 2; }
+
+  .hero-tag {
+    display: inline-flex; align-items: center; gap: 8px;
+    background: rgba(216,189,113,0.1);
+    border: 1px solid rgba(216,189,113,0.25);
+    padding: 6px 16px;
+    border-radius: 100px;
+    font-size: 11px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: var(--gold);
+    margin-bottom: 36px;
+  }
+  .hero-tag::before {
+    content: '';
+    width: 6px; height: 6px;
+    border-radius: 50%;
+    background: var(--gold);
+    animation: pulse 2s infinite;
+  }
+  @keyframes pulse {
+    0%,100% { opacity: 1; }
+    50% { opacity: .3; }
+  }
+
+  .hero-title {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 72px;
+    font-weight: 300;
+    line-height: 1.1;
+    letter-spacing: -1px;
+    margin-bottom: 28px;
+  }
+  .hero-title em {
+    font-style: italic;
+    color: var(--gold);
+  }
+
+  .hero-sub {
+    font-size: 18px;
+    color: var(--muted);
+    line-height: 1.7;
+    max-width: 480px;
+    margin-bottom: 52px;
+    font-weight: 300;
+  }
+
+  .hero-ctas { display: flex; gap: 16px; align-items: center; }
+
+  .btn-primary {
+    background: linear-gradient(135deg, var(--gold), var(--gold-2));
+    color: #0B0B0D;
+    border: none;
+    padding: 16px 36px;
+    border-radius: 4px;
+    font-size: 13px;
+    font-weight: 600;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    cursor: pointer;
+    transition: all .3s;
+  }
+  .btn-primary:hover {
+    box-shadow: 0 0 30px rgba(216,189,113,0.3);
+    transform: translateY(-1px);
+  }
+
+  .btn-ghost {
+    background: transparent;
+    color: var(--white);
+    border: 1px solid var(--border);
+    padding: 15px 36px;
+    border-radius: 4px;
+    font-size: 13px;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    cursor: pointer;
+    transition: all .3s;
+    display: flex; align-items: center; gap: 10px;
+  }
+  .btn-ghost:hover {
+    border-color: var(--gold);
+    color: var(--gold);
+  }
+  .play-icon {
+    width: 28px; height: 28px;
+    border-radius: 50%;
+    background: rgba(216,189,113,0.15);
+    border: 1px solid rgba(216,189,113,0.3);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 10px;
+  }
+
+  .hero-right { position: relative; }
+
+  /* ── HERO VISUAL ── */
+  .hero-visual {
+    position: relative;
+    height: 600px;
+    display: flex; align-items: center; justify-content: center;
+  }
+
+  /* Network SVG background */
+  .network-bg {
+    position: absolute; inset: 0;
+    opacity: .4;
+  }
+
+  /* Map overlay */
+  .map-card {
+    position: absolute;
+    top: 40px; left: 0; right: 0;
+    background: rgba(17,18,20,0.9);
+    border: 1px solid var(--border);
+    border-radius: var(--r);
+    padding: 20px;
+    backdrop-filter: blur(20px);
+    box-shadow: 0 0 40px rgba(0,0,0,0.5);
+  }
+
+  .map-label {
+    font-size: 10px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: var(--gold);
+    margin-bottom: 12px;
+  }
+
+  .map-area {
+    height: 180px;
+    background: var(--surf-2);
+    border-radius: 12px;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .map-dots {
+    position: absolute; inset: 0;
+  }
+
+  .map-dot {
+    position: absolute;
+    width: 8px; height: 8px;
+    border-radius: 50%;
+    background: var(--gold);
+    box-shadow: 0 0 12px rgba(216,189,113,0.6);
+    animation: dotPulse 3s infinite;
+  }
+  .map-dot::after {
+    content: '';
+    position: absolute;
+    inset: -4px;
+    border-radius: 50%;
+    border: 1px solid rgba(216,189,113,0.3);
+    animation: ripple 3s infinite;
+  }
+  @keyframes ripple {
+    0% { transform: scale(1); opacity: 1; }
+    100% { transform: scale(2.5); opacity: 0; }
+  }
+  @keyframes dotPulse {
+    0%,100% { opacity:1; }
+    50% { opacity:.6; }
+  }
+
+  /* Floating cards */
+  .float-card {
+    position: absolute;
+    background: rgba(17,18,20,0.95);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    padding: 16px 20px;
+    backdrop-filter: blur(20px);
+    box-shadow: 0 0 20px var(--glow);
+    animation: float 6s ease-in-out infinite;
+  }
+  .float-card:nth-child(2) { animation-delay: -2s; }
+  .float-card:nth-child(3) { animation-delay: -4s; }
+
+  @keyframes float {
+    0%,100% { transform: translateY(0); }
+    50% { transform: translateY(-10px); }
+  }
+
+  .fc-1 { top: 20px; right: -20px; width: 200px; }
+  .fc-2 { bottom: 80px; left: -20px; width: 220px; }
+  .fc-3 { bottom: 20px; right: 20px; width: 180px; }
+
+  .fc-tag {
+    font-size: 9px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: var(--gold);
+    margin-bottom: 8px;
+  }
+  .fc-title {
+    font-size: 14px;
+    font-weight: 500;
+    margin-bottom: 4px;
+  }
+  .fc-sub {
+    font-size: 11px;
+    color: var(--muted);
+  }
+  .fc-match {
+    display: flex; align-items: center; gap: 6px;
+    margin-top: 10px;
+    font-size: 11px;
+  }
+  .match-bar {
+    flex: 1;
+    height: 3px;
+    background: rgba(255,255,255,0.1);
+    border-radius: 2px;
+    overflow: hidden;
+  }
+  .match-fill {
+    height: 100%;
+    background: linear-gradient(90deg, var(--gold), var(--amber));
+    border-radius: 2px;
+  }
+  .match-pct { color: var(--gold); font-size: 11px; font-weight: 600; }
+
+  /* ── DIVIDER ── */
+  .divider {
+    width: 100%;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, var(--border), transparent);
+    margin: 0 60px;
+    width: calc(100% - 120px);
+  }
+
+  /* ── KPI SECTION ── */
+  #kpis {
+    padding: 80px 60px;
+    background: var(--surf-1);
+    border-top: 1px solid var(--border);
+    border-bottom: 1px solid var(--border);
+  }
+
+  .kpi-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 24px;
+    margin-top: 0;
+  }
+
+  .kpi-card {
+    background: var(--surf-2);
+    border: 1px solid var(--border);
+    border-radius: var(--r);
+    padding: 32px;
+    position: relative;
+    overflow: hidden;
+    transition: all .4s;
+    cursor: default;
+  }
+  .kpi-card::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 2px;
+    background: linear-gradient(90deg, transparent, var(--gold), transparent);
+    opacity: 0;
+    transition: opacity .4s;
+  }
+  .kpi-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 0 30px var(--glow);
+    border-color: rgba(216,189,113,0.2);
+  }
+  .kpi-card:hover::before { opacity: 1; }
+
+  .kpi-icon {
+    width: 44px; height: 44px;
+    border-radius: 12px;
+    background: rgba(216,189,113,0.1);
+    border: 1px solid rgba(216,189,113,0.2);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 20px;
+    margin-bottom: 20px;
+  }
+
+  .kpi-value {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 48px;
+    font-weight: 300;
+    color: var(--white);
+    line-height: 1;
+    margin-bottom: 6px;
+  }
+  .kpi-value span { color: var(--gold); }
+
+  .kpi-label {
+    font-size: 13px;
+    color: var(--muted);
+    letter-spacing: .5px;
+    margin-bottom: 16px;
+  }
+
+  .kpi-trend {
+    display: flex; align-items: center; gap: 6px;
+    font-size: 12px;
+    color: #4CAF50;
+  }
+  .kpi-trend.amber { color: var(--amber); }
+
+  /* ── INSIGHTS ── */
+  #insights { padding: 120px 60px; }
+
+  .section-header {
+    display: flex; align-items: flex-end; justify-content: space-between;
+    margin-bottom: 56px;
+  }
+
+  .section-title {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 40px;
+    font-weight: 300;
+    line-height: 1.2;
+  }
+  .section-title em { font-style: italic; color: var(--gold); }
+
+  .see-all {
+    font-size: 12px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: var(--gold);
+    text-decoration: none;
+    display: flex; align-items: center; gap: 8px;
+    border-bottom: 1px solid rgba(216,189,113,0.3);
+    padding-bottom: 2px;
+    transition: gap .3s;
+  }
+  .see-all:hover { gap: 14px; }
+
+  .insights-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 24px;
+  }
+
+  .insight-card {
+    background: var(--surf-1);
+    border: 1px solid var(--border);
+    border-radius: var(--r);
+    padding: 36px;
+    position: relative;
+    overflow: hidden;
+    transition: all .4s;
+  }
+  .insight-card:hover {
+    border-color: rgba(216,189,113,0.15);
+    box-shadow: 0 0 30px var(--glow);
+  }
+
+  .ic-header {
+    display: flex; align-items: center; justify-content: space-between;
+    margin-bottom: 8px;
+  }
+  .ic-tag {
+    font-size: 10px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: var(--gold);
+  }
+  .ic-badge {
+    font-size: 10px;
+    background: rgba(216,189,113,0.1);
+    border: 1px solid rgba(216,189,113,0.2);
+    color: var(--gold);
+    padding: 3px 10px;
+    border-radius: 100px;
+    letter-spacing: 1px;
+  }
+
+  .ic-title {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 22px;
+    font-weight: 400;
+    margin-bottom: 10px;
+  }
+  .ic-desc {
+    font-size: 13px;
+    color: var(--muted);
+    line-height: 1.7;
+    margin-bottom: 28px;
+  }
+
+  /* Mini charts */
+  .mini-chart { position: relative; height: 80px; margin-bottom: 24px; }
+  .mini-chart svg { width: 100%; height: 100%; }
+
+  .ic-stats {
+    display: flex; flex-direction: column; gap: 10px;
+  }
+  .ic-stat {
+    display: flex; align-items: center; justify-content: space-between;
+  }
+  .ic-stat-label { font-size: 12px; color: var(--muted); }
+  .ic-stat-bar {
+    flex: 1; height: 2px;
+    background: rgba(255,255,255,0.08);
+    border-radius: 1px;
+    margin: 0 12px;
+    overflow: hidden;
+  }
+  .ic-stat-fill {
+    height: 100%;
+    background: linear-gradient(90deg, var(--gold-2), var(--gold));
+    border-radius: 1px;
+    transition: width .8s;
+  }
+  .ic-stat-val { font-size: 12px; color: var(--gold); font-weight: 500; }
+
+  /* AI card items */
+  .ai-items { display: flex; flex-direction: column; gap: 10px; }
+  .ai-item {
+    display: flex; align-items: center; gap: 12px;
+    background: rgba(255,255,255,0.03);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 12px 14px;
+    font-size: 13px;
+    transition: all .3s;
+  }
+  .ai-item:hover {
+    border-color: rgba(216,189,113,0.2);
+    background: rgba(216,189,113,0.04);
+  }
+  .ai-item-icon { font-size: 16px; flex-shrink: 0; }
+  .ai-item-text { flex: 1; color: var(--muted); }
+  .ai-item-match { color: var(--gold); font-size: 12px; font-weight: 600; }
+
+  /* Growth card */
+  .growth-items { display: flex; flex-direction: column; gap: 14px; }
+  .growth-item {
+    display: flex; align-items: center; gap: 14px;
+  }
+  .growth-avatar {
+    width: 36px; height: 36px;
+    border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 14px;
+    flex-shrink: 0;
+  }
+  .growth-info { flex: 1; }
+  .growth-name { font-size: 13px; font-weight: 500; }
+  .growth-role { font-size: 11px; color: var(--muted); }
+  .growth-time { font-size: 11px; color: var(--gold); }
+
+  /* ── FEATURE SHOWCASE ── */
+  #features {
+    background: var(--surf-1);
+    border-top: 1px solid var(--border);
+    border-bottom: 1px solid var(--border);
+    padding: 120px 60px;
+  }
+
+  .features-grid {
+    display: grid;
+    grid-template-columns: 1fr 1.2fr;
+    gap: 80px;
+    align-items: center;
+  }
+
+  .features-left { }
+
+  .features-title {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 44px;
+    font-weight: 300;
+    line-height: 1.2;
+    margin-bottom: 24px;
+  }
+  .features-title em { font-style: italic; color: var(--gold); }
+
+  .features-desc {
+    font-size: 15px;
+    color: var(--muted);
+    line-height: 1.8;
+    margin-bottom: 44px;
+  }
+
+  .feature-list { display: flex; flex-direction: column; gap: 0; }
+
+  .feature-item {
+    display: flex; align-items: flex-start; gap: 18px;
+    padding: 20px 0;
+    border-bottom: 1px solid var(--border);
+    transition: all .3s;
+    cursor: default;
+  }
+  .feature-item:first-child { border-top: 1px solid var(--border); }
+  .feature-item:hover .fi-icon { box-shadow: 0 0 16px var(--glow); border-color: rgba(216,189,113,0.4); }
+
+  .fi-icon {
+    width: 40px; height: 40px;
+    border-radius: 10px;
+    background: rgba(216,189,113,0.08);
+    border: 1px solid rgba(216,189,113,0.15);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 16px;
+    flex-shrink: 0;
+    transition: all .3s;
+  }
+
+  .fi-content {}
+  .fi-title { font-size: 14px; font-weight: 500; margin-bottom: 4px; }
+  .fi-desc { font-size: 13px; color: var(--muted); }
+
+  /* Dashboard mockup */
+  .dashboard-mockup {
+    background: var(--surf-2);
+    border: 1px solid var(--border);
+    border-radius: 24px;
+    overflow: hidden;
+    box-shadow: 0 40px 80px rgba(0,0,0,0.6), 0 0 40px var(--glow);
+  }
+
+  .db-header {
+    background: rgba(11,11,13,0.8);
+    padding: 14px 20px;
+    display: flex; align-items: center; gap: 8px;
+    border-bottom: 1px solid var(--border);
+  }
+  .db-dot { width: 10px; height: 10px; border-radius: 50%; }
+
+  .db-search {
+    margin: 16px 16px 0;
+    background: rgba(255,255,255,0.04);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 10px 16px;
+    display: flex; align-items: center; gap: 10px;
+    font-size: 13px;
+    color: var(--muted);
+  }
+
+  .db-body { padding: 16px; display: flex; flex-direction: column; gap: 10px; }
+
+  .db-section-label {
+    font-size: 9px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: var(--gold);
+    margin-bottom: 4px;
+  }
+
+  .db-horse-card {
+    background: rgba(255,255,255,0.03);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 12px 14px;
+    display: flex; align-items: center; gap: 12px;
+    transition: all .3s;
+  }
+  .db-horse-card:hover {
+    border-color: rgba(216,189,113,0.2);
+    box-shadow: 0 0 16px var(--glow);
+  }
+
+  .db-horse-avatar {
+    width: 42px; height: 42px;
+    border-radius: 10px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 20px;
+    flex-shrink: 0;
+  }
+
+  .db-horse-info { flex: 1; }
+  .db-horse-name { font-size: 13px; font-weight: 500; }
+  .db-horse-meta { font-size: 11px; color: var(--muted); }
+
+  .db-horse-badge {
+    font-size: 10px;
+    padding: 3px 10px;
+    border-radius: 100px;
+    font-weight: 500;
+  }
+  .badge-ai {
+    background: rgba(242,173,117,0.12);
+    border: 1px solid rgba(242,173,117,0.25);
+    color: var(--amber);
+  }
+  .badge-match {
+    background: rgba(216,189,113,0.1);
+    border: 1px solid rgba(216,189,113,0.2);
+    color: var(--gold);
+  }
+
+  .db-insight {
+    background: rgba(216,189,113,0.06);
+    border: 1px solid rgba(216,189,113,0.15);
+    border-radius: 12px;
+    padding: 12px 14px;
+    display: flex; gap: 10px; align-items: flex-start;
+  }
+  .db-insight-icon { font-size: 16px; flex-shrink: 0; }
+  .db-insight-text { font-size: 12px; color: var(--muted); line-height: 1.5; }
+  .db-insight-text strong { color: var(--amber); }
+
+  /* ── AI SECTION ── */
+  #ai-section { padding: 120px 60px; }
+
+  .ai-hero {
+    background: var(--surf-1);
+    border: 1px solid var(--border);
+    border-radius: 28px;
+    padding: 72px;
+    position: relative;
+    overflow: hidden;
+    text-align: center;
+  }
+
+  .ai-hero::before {
+    content: '';
+    position: absolute;
+    top: -100px; left: 50%; transform: translateX(-50%);
+    width: 600px; height: 600px;
+    background: radial-gradient(circle, rgba(242,173,117,0.08) 0%, transparent 70%);
+    pointer-events: none;
+  }
+
+  .ai-orb {
+    width: 80px; height: 80px;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(242,173,117,0.3), rgba(216,189,113,0.1));
+    border: 1px solid rgba(242,173,117,0.3);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 32px;
+    margin: 0 auto 32px;
+    box-shadow: 0 0 40px rgba(242,173,117,0.3);
+    animation: orbPulse 3s ease-in-out infinite;
+  }
+  @keyframes orbPulse {
+    0%,100% { box-shadow: 0 0 40px rgba(242,173,117,0.3); }
+    50% { box-shadow: 0 0 60px rgba(242,173,117,0.5); }
+  }
+
+  .ai-title {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 44px;
+    font-weight: 300;
+    margin-bottom: 14px;
+  }
+  .ai-title em { font-style: italic; color: var(--amber); }
+
+  .ai-desc {
+    font-size: 16px;
+    color: var(--muted);
+    max-width: 560px;
+    margin: 0 auto 56px;
+    line-height: 1.7;
+  }
+
+  .ai-insights-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 20px;
+    margin-bottom: 32px;
+  }
+
+  .ai-insight-card {
+    background: var(--surf-2);
+    border: 1px solid rgba(242,173,117,0.15);
+    border-radius: 16px;
+    padding: 24px;
+    text-align: left;
+    position: relative;
+    overflow: hidden;
+    transition: all .4s;
+  }
+  .ai-insight-card::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 2px;
+    background: linear-gradient(90deg, transparent, var(--amber), transparent);
+  }
+  .ai-insight-card:hover {
+    border-color: rgba(242,173,117,0.3);
+    box-shadow: 0 0 30px var(--glow-amber);
+    transform: translateY(-3px);
+  }
+
+  .aic-icon { font-size: 22px; margin-bottom: 12px; }
+  .aic-title { font-size: 14px; font-weight: 500; margin-bottom: 6px; }
+  .aic-text { font-size: 12px; color: var(--muted); line-height: 1.6; }
+  .aic-score {
+    display: flex; align-items: center; gap: 8px;
+    margin-top: 14px;
+    font-size: 11px;
+    color: var(--amber);
+  }
+  .score-bar {
+    flex: 1; height: 2px;
+    background: rgba(255,255,255,0.08);
+    border-radius: 1px; overflow: hidden;
+  }
+  .score-fill {
+    height: 100%;
+    background: linear-gradient(90deg, var(--gold), var(--amber));
+  }
+
+  .ai-bottom-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
+  }
+
+  .ai-wide-card {
+    background: var(--surf-2);
+    border: 1px solid rgba(242,173,117,0.15);
+    border-radius: 16px;
+    padding: 24px;
+    text-align: left;
+    display: flex; align-items: center; gap: 20px;
+    transition: all .4s;
+  }
+  .ai-wide-card:hover {
+    border-color: rgba(242,173,117,0.3);
+    box-shadow: 0 0 20px var(--glow-amber);
+  }
+  .awc-icon { font-size: 28px; flex-shrink: 0; }
+  .awc-content {}
+  .awc-title { font-size: 14px; font-weight: 500; margin-bottom: 6px; }
+  .awc-text { font-size: 12px; color: var(--muted); line-height: 1.6; }
+
+  /* ── FOOTER ── */
+  footer {
+    background: var(--surf-1);
+    border-top: 1px solid var(--border);
+    padding: 60px;
+  }
+
+  .footer-inner {
+    display: grid;
+    grid-template-columns: 2fr 1fr 1fr 1fr;
+    gap: 60px;
+    margin-bottom: 48px;
+  }
+
+  .footer-brand img {
+    height: 32px;
+    width: auto;
+    display: block;
+    margin-bottom: 16px;
+    opacity: 0.85;
+  }
+  .footer-tagline { font-size: 13px; color: var(--muted); line-height: 1.7; max-width: 280px; }
+
+  .footer-col-title {
+    font-size: 10px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: var(--gold);
+    margin-bottom: 20px;
+  }
+  .footer-links { list-style: none; display: flex; flex-direction: column; gap: 12px; }
+  .footer-links a { color: var(--muted); text-decoration: none; font-size: 13px; transition: color .3s; }
+  .footer-links a:hover { color: var(--white); }
+
+  .footer-bottom {
+    border-top: 1px solid var(--border);
+    padding-top: 28px;
+    display: flex; align-items: center; justify-content: space-between;
+    font-size: 12px;
+    color: var(--muted);
+  }
+  .footer-bottom a { color: var(--gold); text-decoration: none; }
+
+  /* ── FADE IN ANIMATION ── */
+  .fade-up {
+    opacity: 0;
+    transform: translateY(24px);
+    transition: opacity .8s ease, transform .8s ease;
+  }
+  .fade-up.visible {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  /* Stagger */
+  .fade-up:nth-child(2) { transition-delay: .1s; }
+  .fade-up:nth-child(3) { transition-delay: .2s; }
+  .fade-up:nth-child(4) { transition-delay: .3s; }
+
+  /* ── RESPONSIVE ── */
+  @media (max-width: 1100px) {
+    #hero { grid-template-columns: 1fr; }
+    .hero-right { display: none; }
+    .kpi-grid { grid-template-columns: repeat(2, 1fr); }
+    .insights-grid { grid-template-columns: 1fr; }
+    .features-grid { grid-template-columns: 1fr; }
+    .ai-insights-grid { grid-template-columns: 1fr; }
+    .ai-bottom-row { grid-template-columns: 1fr; }
+    .footer-inner { grid-template-columns: 1fr 1fr; }
+    section { padding: 80px 30px; }
+    nav { padding: 16px 30px; }
+    .hero-title { font-size: 48px; }
+  }
+</style>
+</head>
+<body>
+
+<!-- ── NAVIGATION ── -->
+<nav>
+  <div class="nav-logo"><img src="velaro_logo.png" alt="Velaro"></div>
+  <ul class="nav-links">
+    <li><a href="#">Platform</a></li>
+    <li><a href="#">Paarden</a></li>
+    <li><a href="#">Professionals</a></li>
+    <li><a href="#">Stallen</a></li>
+    <li><a href="#">Evenementen</a></li>
+    <li><a href="#">AI Assistent</a></li>
+  </ul>
+  <button class="nav-cta">Toegang Aanvragen</button>
+</nav>
+
+<!-- ── HERO ── -->
+<section id="hero">
+  <div class="hero-left">
+    <div class="hero-tag">Premium Hippisch Platform · Exclusief Ecosysteem</div>
+    <h1 class="hero-title">
+      Het digitale platform<br>voor de <em>complete</em><br>paardensport
+    </h1>
+    <p class="hero-sub">
+      Vind paarden, professionals, stallen, kennis en kansen<br>
+      binnen één exclusief ecosysteem voor de hippische sector.
+    </p>
+    <div class="hero-ctas">
+      <button class="btn-primary">Ontdek het Platform</button>
+      <button class="btn-ghost">
+        <span class="play-icon">▶</span>
+        Bekijk Demo
+      </button>
+    </div>
+  </div>
+
+  <div class="hero-right">
+    <div class="hero-visual">
+
+      <!-- Network SVG -->
+      <svg class="network-bg" viewBox="0 0 500 500" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <circle cx="250" cy="250" r="180" stroke="rgba(216,189,113,0.08)" stroke-width="1"/>
+        <circle cx="250" cy="250" r="120" stroke="rgba(216,189,113,0.12)" stroke-width="1"/>
+        <circle cx="250" cy="250" r="60"  stroke="rgba(216,189,113,0.18)" stroke-width="1"/>
+        <!-- nodes -->
+        <circle cx="250" cy="70"  r="5" fill="#D8BD71" opacity=".8"/>
+        <circle cx="430" cy="250" r="5" fill="#D8BD71" opacity=".8"/>
+        <circle cx="70"  cy="250" r="5" fill="#D8BD71" opacity=".8"/>
+        <circle cx="250" cy="430" r="5" fill="#D8BD71" opacity=".6"/>
+        <circle cx="380" cy="120" r="4" fill="#BEA256" opacity=".7"/>
+        <circle cx="120" cy="380" r="4" fill="#BEA256" opacity=".7"/>
+        <circle cx="380" cy="380" r="4" fill="#F2AD75" opacity=".7"/>
+        <circle cx="120" cy="120" r="4" fill="#F2AD75" opacity=".7"/>
+        <!-- connecting lines -->
+        <line x1="250" y1="70"  x2="430" y2="250" stroke="rgba(216,189,113,0.12)" stroke-width="1"/>
+        <line x1="250" y1="70"  x2="70"  y2="250" stroke="rgba(216,189,113,0.12)" stroke-width="1"/>
+        <line x1="430" y1="250" x2="250" y2="430" stroke="rgba(216,189,113,0.12)" stroke-width="1"/>
+        <line x1="70"  y1="250" x2="250" y2="430" stroke="rgba(216,189,113,0.12)" stroke-width="1"/>
+        <line x1="380" y1="120" x2="380" y2="380" stroke="rgba(216,189,113,0.08)" stroke-width="1"/>
+        <line x1="120" y1="120" x2="120" y2="380" stroke="rgba(216,189,113,0.08)" stroke-width="1"/>
+        <line x1="250" y1="250" x2="250" y2="70"  stroke="rgba(216,189,113,0.15)" stroke-width="1" stroke-dasharray="4 4"/>
+        <line x1="250" y1="250" x2="430" y2="250" stroke="rgba(216,189,113,0.15)" stroke-width="1" stroke-dasharray="4 4"/>
+        <line x1="250" y1="250" x2="70"  y2="250" stroke="rgba(216,189,113,0.15)" stroke-width="1" stroke-dasharray="4 4"/>
+        <circle cx="250" cy="250" r="12" fill="rgba(216,189,113,0.2)" stroke="#D8BD71" stroke-width="1"/>
+        <circle cx="250" cy="250" r="5"  fill="#D8BD71"/>
+      </svg>
+
+      <!-- Map card -->
+      <div class="map-card">
+        <div class="map-label">Gebruikers & Activiteit · Nederland</div>
+        <div class="map-area">
+          <!-- Simple NL outline approximation via SVG -->
+          <svg viewBox="0 0 300 200" style="position:absolute;inset:0;width:100%;height:100%;opacity:.25">
+            <path d="M80,20 L200,15 L240,60 L220,100 L240,130 L200,160 L140,180 L100,160 L60,140 L40,100 L50,60 Z"
+                  fill="rgba(216,189,113,0.08)" stroke="rgba(216,189,113,0.3)" stroke-width="1"/>
+          </svg>
+          <div class="map-dots">
+            <div class="map-dot" style="top:30%;left:35%"></div>
+            <div class="map-dot" style="top:45%;left:50%;animation-delay:.5s"></div>
+            <div class="map-dot" style="top:60%;left:40%;animation-delay:1s"></div>
+            <div class="map-dot" style="top:25%;left:60%;animation-delay:1.5s"></div>
+            <div class="map-dot" style="top:70%;left:55%;animation-delay:2s"></div>
+            <div class="map-dot" style="top:50%;left:28%;animation-delay:2.5s"></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Floating card 1: Horse profile -->
+      <div class="float-card fc-1">
+        <div class="fc-tag">AI Match · 96%</div>
+        <div class="fc-title">Florentijn van de Berg</div>
+        <div class="fc-sub">KWPN · 8 jaar · Dressuur Z</div>
+        <div class="fc-match">
+          <div class="match-bar"><div class="match-fill" style="width:96%"></div></div>
+          <span class="match-pct">96%</span>
+        </div>
+      </div>
+
+      <!-- Floating card 2: Trainer -->
+      <div class="float-card fc-2">
+        <div class="fc-tag">Geverifieerd Professional</div>
+        <div class="fc-title">Emma de Vries</div>
+        <div class="fc-sub">Springtrainer · Regio Utrecht</div>
+        <div class="fc-match">
+          <div class="match-bar"><div class="match-fill" style="width:89%"></div></div>
+          <span class="match-pct">89%</span>
+        </div>
+      </div>
+
+      <!-- Floating card 3: Market -->
+      <div class="float-card fc-3">
+        <div class="fc-tag">Marktinzicht</div>
+        <div class="fc-title">↑ 24% Vraag</div>
+        <div class="fc-sub">Dressuurpaarden · Q4 2025</div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- ── KPI SECTION ── -->
+<section id="kpis">
+  <div class="kpi-grid">
+    <div class="kpi-card fade-up">
+      <div class="kpi-icon">🐴</div>
+      <div class="kpi-value">12<span>,4K</span></div>
+      <div class="kpi-label">Actieve Paardenprofielen</div>
+      <div class="kpi-trend">▲ 18% deze maand</div>
+    </div>
+    <div class="kpi-card fade-up">
+      <div class="kpi-icon">🎖</div>
+      <div class="kpi-value">3<span>,2K</span></div>
+      <div class="kpi-label">Geverifieerde Professionals</div>
+      <div class="kpi-trend">▲ 12% dit kwartaal</div>
+    </div>
+    <div class="kpi-card fade-up">
+      <div class="kpi-icon">✦</div>
+      <div class="kpi-value">847</div>
+      <div class="kpi-label">Maandelijkse AI-matches</div>
+      <div class="kpi-trend amber">▲ 34% groei</div>
+    </div>
+    <div class="kpi-card fade-up">
+      <div class="kpi-icon">◈</div>
+      <div class="kpi-value">9<span>.7</span></div>
+      <div class="kpi-label">Klanttevredenheid / 10</div>
+      <div class="kpi-trend">▲ NPS 72</div>
+    </div>
+  </div>
+</section>
+
+<!-- ── INSIGHTS ── -->
+<section id="insights">
+  <div class="section-header">
+    <div>
+      <div class="label">Platform Intelligence</div>
+      <h2 class="section-title">Realtime <em>marktinzichten</em><br>en AI-analyse</h2>
+    </div>
+    <a href="#" class="see-all">Alle inzichten →</a>
+  </div>
+
+  <div class="insights-grid">
+
+    <!-- Card A: Market -->
+    <div class="insight-card fade-up">
+      <div class="ic-header">
+        <span class="ic-tag">Marktanalyse</span>
+        <span class="ic-badge">Live</span>
+      </div>
+      <h3 class="ic-title">Vraag & Aanbod Analyse</h3>
+      <p class="ic-desc">Realtime inzicht in vraag naar sportpaarden per discipline en regio, gebaseerd op platformactiviteit.</p>
+      <div class="mini-chart">
+        <svg viewBox="0 0 280 80" fill="none">
+          <defs>
+            <linearGradient id="chartGrad" x1="0" y1="0" x2="0" y2="1">
+              <stop offset="0%" stop-color="#D8BD71" stop-opacity=".3"/>
+              <stop offset="100%" stop-color="#D8BD71" stop-opacity="0"/>
+            </linearGradient>
+          </defs>
+          <path d="M0,70 L40,55 L80,45 L120,30 L160,35 L200,20 L240,15 L280,10 L280,80 L0,80 Z" fill="url(#chartGrad)"/>
+          <path d="M0,70 L40,55 L80,45 L120,30 L160,35 L200,20 L240,15 L280,10" stroke="#D8BD71" stroke-width="1.5" fill="none"/>
+          <circle cx="280" cy="10" r="3" fill="#D8BD71"/>
+          <!-- Second line -->
+          <path d="M0,75 L40,70 L80,65 L120,60 L160,55 L200,50 L240,48 L280,42" stroke="rgba(190,162,86,0.4)" stroke-width="1" fill="none" stroke-dasharray="3 3"/>
+        </svg>
+      </div>
+      <div class="ic-stats">
+        <div class="ic-stat">
+          <span class="ic-stat-label">Dressuurpaarden</span>
+          <div class="ic-stat-bar"><div class="ic-stat-fill" style="width:78%"></div></div>
+          <span class="ic-stat-val">↑78%</span>
+        </div>
+        <div class="ic-stat">
+          <span class="ic-stat-label">Springpaarden</span>
+          <div class="ic-stat-bar"><div class="ic-stat-fill" style="width:65%"></div></div>
+          <span class="ic-stat-val">↑65%</span>
+        </div>
+        <div class="ic-stat">
+          <span class="ic-stat-label">Allround</span>
+          <div class="ic-stat-bar"><div class="ic-stat-fill" style="width:42%"></div></div>
+          <span class="ic-stat-val">↑42%</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Card B: AI Matching -->
+    <div class="insight-card fade-up">
+      <div class="ic-header">
+        <span class="ic-tag">AI Matchmaking</span>
+        <span class="ic-badge">3 nieuwe matches</span>
+      </div>
+      <h3 class="ic-title">Persoonlijke Aanbevelingen</h3>
+      <p class="ic-desc">Op basis van uw profiel, doelen en sporthistorie identificeert onze AI de beste matches voor u.</p>
+      <div class="ai-items">
+        <div class="ai-item">
+          <span class="ai-item-icon">🐴</span>
+          <span class="ai-item-text">Florentijn van de Berg · KWPN · Z-dressuur</span>
+          <span class="ai-item-match">96%</span>
+        </div>
+        <div class="ai-item">
+          <span class="ai-item-icon">🏅</span>
+          <span class="ai-item-text">Thomas van Leer · Springtrainer · M-niveau</span>
+          <span class="ai-item-match">91%</span>
+        </div>
+        <div class="ai-item">
+          <span class="ai-item-icon">🏟</span>
+          <span class="ai-item-text">Stal Heidehof · Noord-Brabant · 6 boxen vrij</span>
+          <span class="ai-item-match">88%</span>
+        </div>
+        <div class="ai-item">
+          <span class="ai-item-icon">🐴</span>
+          <span class="ai-item-text">Diamant's Highlight · BWP · GP-niveau</span>
+          <span class="ai-item-match">84%</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Card C: Community -->
+    <div class="insight-card fade-up">
+      <div class="ic-header">
+        <span class="ic-tag">Community Groei</span>
+        <span class="ic-badge">+147 vandaag</span>
+      </div>
+      <h3 class="ic-title">Actieve Community</h3>
+      <p class="ic-desc">Een groeiend netwerk van professionals, eigenaren en liefhebbers die kennis en kansen delen.</p>
+      <div class="mini-chart">
+        <svg viewBox="0 0 280 80" fill="none">
+          <defs>
+            <linearGradient id="chartGrad2" x1="0" y1="0" x2="0" y2="1">
+              <stop offset="0%" stop-color="#F2AD75" stop-opacity=".25"/>
+              <stop offset="100%" stop-color="#F2AD75" stop-opacity="0"/>
+            </linearGradient>
+          </defs>
+          <!-- Bar chart -->
+          <rect x="10"  y="55" width="24" height="25" rx="3" fill="rgba(216,189,113,0.15)"/>
+          <rect x="46"  y="45" width="24" height="35" rx="3" fill="rgba(216,189,113,0.2)"/>
+          <rect x="82"  y="38" width="24" height="42" rx="3" fill="rgba(216,189,113,0.25)"/>
+          <rect x="118" y="28" width="24" height="52" rx="3" fill="rgba(216,189,113,0.3)"/>
+          <rect x="154" y="32" width="24" height="48" rx="3" fill="rgba(216,189,113,0.25)"/>
+          <rect x="190" y="18" width="24" height="62" rx="3" fill="rgba(216,189,113,0.35)"/>
+          <rect x="226" y="10" width="24" height="70" rx="3" fill="#D8BD71" opacity=".6"/>
+        </svg>
+      </div>
+      <div class="growth-items">
+        <div class="growth-item">
+          <div class="growth-avatar" style="background:rgba(216,189,113,0.1)">👤</div>
+          <div class="growth-info">
+            <div class="growth-name">Anna Konings</div>
+            <div class="growth-role">Eigenaar · Dressuur · Regio Amsterdam</div>
+          </div>
+          <div class="growth-time">2m</div>
+        </div>
+        <div class="growth-item">
+          <div class="growth-avatar" style="background:rgba(242,173,117,0.1)">👤</div>
+          <div class="growth-info">
+            <div class="growth-name">Stal De Hoeve</div>
+            <div class="growth-role">Pensionstal · 18 boxen · Gelderland</div>
+          </div>
+          <div class="growth-time">8m</div>
+        </div>
+        <div class="growth-item">
+          <div class="growth-avatar" style="background:rgba(190,162,86,0.1)">👤</div>
+          <div class="growth-info">
+            <div class="growth-name">Marc Pietersen</div>
+            <div class="growth-role">Instructeur KNHS · Springen L/M</div>
+          </div>
+          <div class="growth-time">15m</div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- ── FEATURE SHOWCASE ── -->
+<section id="features">
+  <div class="features-grid">
+    <div class="features-left">
+      <div class="label">Platform Architectuur</div>
+      <h2 class="features-title">
+        Eén ecosysteem<br>voor de <em>gehele</em><br>hippische sector
+      </h2>
+      <p class="features-desc">
+        Van paardenprofielen tot professionele matchmaking, van marktinzichten tot kennisdeling — alles binnen één premium digitaal platform dat de paardensport naar een nieuw niveau tilt.
+      </p>
+      <div class="feature-list">
+        <div class="feature-item">
+          <div class="fi-icon">🐴</div>
+          <div class="fi-content">
+            <div class="fi-title">Paarden vinden & verkopen</div>
+            <div class="fi-desc">Uitgebreide profielen met genetica, prestaties en gezondheidsdata</div>
+          </div>
+        </div>
+        <div class="feature-item">
+          <div class="fi-icon">🏅</div>
+          <div class="fi-content">
+            <div class="fi-title">Geverifieerde professionals</div>
+            <div class="fi-desc">Trainers, instructeurs en ruiters met gecertificeerde profielen</div>
+          </div>
+        </div>
+        <div class="feature-item">
+          <div class="fi-icon">🏟</div>
+          <div class="fi-content">
+            <div class="fi-title">Stallen & accommodaties</div>
+            <div class="fi-desc">Pensionplaatsen, trainingscentra en tijdelijke stalling</div>
+          </div>
+        </div>
+        <div class="feature-item">
+          <div class="fi-icon">📅</div>
+          <div class="fi-content">
+            <div class="fi-title">Evenementen & wedstrijden</div>
+            <div class="fi-desc">Kalender, inschrijvingen en real-time uitslagen</div>
+          </div>
+        </div>
+        <div class="feature-item">
+          <div class="fi-icon">✦</div>
+          <div class="fi-content">
+            <div class="fi-title">AI-advies & matchmaking</div>
+            <div class="fi-desc">Intelligente aanbevelingen gebaseerd op uw profiel en doelen</div>
+          </div>
+        </div>
+        <div class="feature-item">
+          <div class="fi-icon">◈</div>
+          <div class="fi-content">
+            <div class="fi-title">Marktinformatie & data</div>
+            <div class="fi-desc">Prijstrends, vraag-aanbod analyses en sectorinzichten</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Dashboard mockup -->
+    <div class="features-right">
+      <div class="dashboard-mockup">
+        <div class="db-header">
+          <div class="db-dot" style="background:#FF5F56"></div>
+          <div class="db-dot" style="background:#FFBD2E"></div>
+          <div class="db-dot" style="background:#27C93F"></div>
+          <span style="margin-left:12px;font-size:12px;color:var(--muted);">velaro.nl/dashboard</span>
+        </div>
+
+        <div class="db-search">
+          <span>🔍</span>
+          <span>Zoek paarden, professionals, stallen, evenementen…</span>
+        </div>
+
+        <div class="db-body">
+          <div class="db-section-label">AI Aanbevelingen voor u</div>
+
+          <div class="db-horse-card">
+            <div class="db-horse-avatar" style="background:rgba(216,189,113,0.1)">🐴</div>
+            <div class="db-horse-info">
+              <div class="db-horse-name">Florentijn van de Berg</div>
+              <div class="db-horse-meta">KWPN · 8 jr · Dressuur Z · €45.000</div>
+            </div>
+            <span class="db-horse-badge badge-ai">AI 96%</span>
+          </div>
+
+          <div class="db-horse-card">
+            <div class="db-horse-avatar" style="background:rgba(190,162,86,0.1)">🐴</div>
+            <div class="db-horse-info">
+              <div class="db-horse-name">Diamant's Highlight</div>
+              <div class="db-horse-meta">BWP · 10 jr · Springen GP · €78.000</div>
+            </div>
+            <span class="db-horse-badge badge-match">Match 84%</span>
+          </div>
+
+          <div class="db-horse-card">
+            <div class="db-horse-avatar" style="background:rgba(242,173,117,0.08)">🏅</div>
+            <div class="db-horse-info">
+              <div class="db-horse-name">Emma de Vries · Trainer</div>
+              <div class="db-horse-meta">Springen · Utrecht · 12 jr ervaring</div>
+            </div>
+            <span class="db-horse-badge badge-ai">AI 91%</span>
+          </div>
+
+          <div class="db-section-label" style="margin-top:6px">Marktinzicht</div>
+
+          <div class="db-insight">
+            <span class="db-insight-icon">📈</span>
+            <div class="db-insight-text">
+              <strong>Vraag naar dressuurpaarden stijgt 24%</strong> in Noord-Holland dit kwartaal. Optimaal moment voor verkoop of verhuur van uw paard.
+            </div>
+          </div>
+
+          <div class="db-insight">
+            <span class="db-insight-icon">✦</span>
+            <div class="db-insight-text">
+              <strong>3 nieuwe trainers beschikbaar</strong> die passen bij uw trainingsdoelen voor komend seizoen.
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── AI SECTION ── -->
+<section id="ai-section">
+  <div class="ai-hero">
+    <div class="ai-orb">✦</div>
+    <div class="label" style="justify-content:center">Velaro Intelligence · Powered by AI</div>
+    <h2 class="ai-title">Hippische <em>AI Assistent</em></h2>
+    <p class="ai-desc">
+      Onze AI analyseert continu de markt, uw profiel en uw doelen om u proactief de meest relevante inzichten en kansen te bieden.
+    </p>
+
+    <div class="ai-insights-grid">
+      <div class="ai-insight-card">
+        <div class="aic-icon">🐴</div>
+        <div class="aic-title">Perfecte paardenMatch gevonden</div>
+        <div class="aic-text">Florentijn van de Berg past uitzonderlijk goed bij uw sportdoelen en ervaringsniveau voor dressuur op Z-niveau.</div>
+        <div class="aic-score">
+          <span>Geschiktheid</span>
+          <div class="score-bar"><div class="score-fill" style="width:96%"></div></div>
+          <span>96%</span>
+        </div>
+      </div>
+      <div class="ai-insight-card">
+        <div class="aic-icon">📊</div>
+        <div class="aic-title">Marktkans in uw regio</div>
+        <div class="aic-text">Vraag naar dressuurpaarden stijgt met 24% in Noord-Holland. Kansrijke periode voor verkoop of aankoop.</div>
+        <div class="aic-score">
+          <span>Betrouwbaarheid</span>
+          <div class="score-bar"><div class="score-fill" style="width:89%"></div></div>
+          <span>89%</span>
+        </div>
+      </div>
+      <div class="ai-insight-card">
+        <div class="aic-icon">🏅</div>
+        <div class="aic-title">Nieuwe trainingsmogelijkheid</div>
+        <div class="aic-text">Thomas van Leer heeft capaciteit vrijgemaakt. Zijn specialisatie sluit aan op uw doelen voor het komende seizoen.</div>
+        <div class="aic-score">
+          <span>Aansluiting</span>
+          <div class="score-bar"><div class="score-fill" style="width:91%"></div></div>
+          <span>91%</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="ai-bottom-row">
+      <div class="ai-wide-card">
+        <div class="awc-icon">🏟</div>
+        <div class="awc-content">
+          <div class="awc-title">Stalcapaciteit beschikbaar</div>
+          <div class="awc-text">Stal Heidehof in Noord-Brabant heeft 3 boxen vrij per 1 februari. Op basis van uw zoekprofiel een uitstekende match — 88% geschiktheid.</div>
+        </div>
+      </div>
+      <div class="ai-wide-card">
+        <div class="awc-icon">💡</div>
+        <div class="awc-content">
+          <div class="awc-title">Kansrijke verkoopmatch</div>
+          <div class="awc-text">Op basis van marktdata is een koper geïdentificeerd die aansluit bij het profiel van uw paard Bella's Dream. Geschat rendement: +18% vs. marktgemiddelde.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── FOOTER ── -->
+<footer>
+  <div class="footer-inner">
+    <div>
+      <div class="footer-brand"><img src="velaro_logo.png" alt="Velaro"></div>
+      <p class="footer-tagline">Het premium digitale ecosysteem voor de complete hippische sector. Vertrouwen, kwaliteit en innovatie in één platform.</p>
+    </div>
+    <div>
+      <div class="footer-col-title">Platform</div>
+      <ul class="footer-links">
+        <li><a href="#">Paarden</a></li>
+        <li><a href="#">Professionals</a></li>
+        <li><a href="#">Stallen</a></li>
+        <li><a href="#">Evenementen</a></li>
+        <li><a href="#">Marktdata</a></li>
+      </ul>
+    </div>
+    <div>
+      <div class="footer-col-title">Community</div>
+      <ul class="footer-links">
+        <li><a href="#">Kennisplatform</a></li>
+        <li><a href="#">Forum</a></li>
+        <li><a href="#">Nieuws</a></li>
+        <li><a href="#">Evenementen</a></li>
+        <li><a href="#">Partners</a></li>
+      </ul>
+    </div>
+    <div>
+      <div class="footer-col-title">Velaro</div>
+      <ul class="footer-links">
+        <li><a href="#">Over ons</a></li>
+        <li><a href="#">Toegang aanvragen</a></li>
+        <li><a href="#">Privacy</a></li>
+        <li><a href="#">Voorwaarden</a></li>
+        <li><a href="#">Contact</a></li>
+      </ul>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <span>© 2025 Velaro. Alle rechten voorbehouden. — Concept PoC, dummy data.</span>
+    <span>Gebouwd voor de <a href="#">premium hippische sector</a></span>
+  </div>
+</footer>
+
+<script>
+  // Fade-in on scroll
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(e => {
+      if (e.isIntersecting) {
+        e.target.classList.add('visible');
+        observer.unobserve(e.target);
+      }
+    });
+  }, { threshold: 0.1 });
+
+  document.querySelectorAll('.fade-up').forEach(el => observer.observe(el));
+
+  // Animate KPI numbers
+  function animateCounter(el, target, suffix) {
+    let start = 0;
+    const duration = 1800;
+    const step = (timestamp) => {
+      if (!start) start = timestamp;
+      const progress = Math.min((timestamp - start) / duration, 1);
+      const eased = 1 - Math.pow(1 - progress, 3);
+      el.textContent = (eased * target).toFixed(target % 1 !== 0 ? 1 : 0) + suffix;
+      if (progress < 1) requestAnimationFrame(step);
+    };
+    requestAnimationFrame(step);
+  }
+
+  const kpiObs = new IntersectionObserver((entries) => {
+    entries.forEach(e => {
+      if (e.isIntersecting) {
+        const vals = [
+          { el: document.querySelectorAll('.kpi-value')[0], n: 12.4, s: 'K' },
+          { el: document.querySelectorAll('.kpi-value')[1], n: 3.2,  s: 'K' },
+          { el: document.querySelectorAll('.kpi-value')[2], n: 847,  s: '' },
+          { el: document.querySelectorAll('.kpi-value')[3], n: 9.7,  s: '' },
+        ];
+        vals.forEach(v => {
+          const span = v.el.querySelector('span');
+          const spanText = span ? span.textContent : '';
+          if (span) span.remove();
+          animateCounter(v.el, v.n, v.s);
+          if (span) setTimeout(() => v.el.insertAdjacentHTML('beforeend', `<span>${spanText}</span>`), 1800);
+        });
+        kpiObs.unobserve(e.target);
+      }
+    });
+  }, { threshold: 0.5 });
+
+  const kpiSection = document.getElementById('kpis');
+  if (kpiSection) kpiObs.observe(kpiSection);
+
+  // Animate insight stat bars on scroll
+  const barObs = new IntersectionObserver((entries) => {
+    entries.forEach(e => {
+      if (e.isIntersecting) {
+        e.target.querySelectorAll('.ic-stat-fill, .score-fill, .match-fill').forEach(bar => {
+          const w = bar.style.width;
+          bar.style.width = '0';
+          setTimeout(() => { bar.style.width = w; }, 100);
+        });
+        barObs.unobserve(e.target);
+      }
+    });
+  }, { threshold: 0.3 });
+
+  document.querySelectorAll('.insight-card, .ai-insight-card, .float-card').forEach(el => barObs.observe(el));
+</script>
+</body>
+</html>
