@@ -1,0 +1,25 @@
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  background: var(--velaro-color-bg);
+  color: var(--velaro-color-white);
+  font-family: var(--velaro-font-sans);
+  font-size: var(--velaro-text-base);
+  line-height: 1.6;
+  overflow-x: hidden;
+}
+
+::-webkit-scrollbar { width: 4px; }
+::-webkit-scrollbar-track { background: var(--velaro-color-bg); }
+::-webkit-scrollbar-thumb {
+  background: var(--velaro-color-gold-2);
+  border-radius: 2px;
+}

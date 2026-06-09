@@ -1,0 +1,42 @@
+{
+  "name": "@velaro/design-system",
+  "version": "1.0.0",
+  "description": "Velaro – Design system voor het premium hippisch platform",
+  "main": "dist/index.js",
+  "module": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "style": "src/styles/index.css",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js",
+      "require": "./dist/index.js"
+    },
+    "./styles": "./src/styles/index.css",
+    "./styles/tokens": "./src/styles/tokens.css",
+    "./styles/base": "./src/styles/base.css",
+    "./styles/components": "./src/styles/components.css",
+    "./styles/animations": "./src/styles/animations.css"
+  },
+  "files": [
+    "dist",
+    "src/styles",
+    "velaro_logo.png"
+  ],
+  "scripts": {
+    "build": "tsc",
+    "dev": "tsc --watch"
+  },
+  "peerDependencies": {
+    "react": ">=17.0.0",
+    "react-dom": ">=17.0.0"
+  },
+  "peerDependenciesMeta": {
+    "react": { "optional": true },
+    "react-dom": { "optional": true }
+  },
+  "devDependencies": {
+    "@types/react": "^18.0.0",
+    "typescript": "^5.0.0"
+  }
+}
